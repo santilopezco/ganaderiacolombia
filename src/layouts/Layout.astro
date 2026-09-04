@@ -1,0 +1,66 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  titulo: string;
+  descripcion: string;
+}
+
+const { titulo, descripcion } = Astro.props;
+const SITE_URL = "https://ganaderiacolombia.com";
+const canonical = new URL(Astro.url.pathname, SITE_URL).toString();
+---
+
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titulo}</title>
+    <meta name="description" content={descripcion} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!-- Open Graph básico -->
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!--
+      ANALYTICS Y PIXEL — pegar aquí antes de publicar.
+      Google Analytics (gtag.js) y Meta Pixel van en el <head>.
+      Ver README.md sección "Analítica" para el snippet exacto.
+    -->
+  </head>
+  <body>
+    <div class="ribbon">
+      Sitio en fase de prueba · Precios de referencia · No es checkout en línea todavía
+    </div>
+    <slot />
+
+    <script>
+      // Delegación global de clics de WhatsApp — funciona para cualquier botón .wa con data-msg
+      const WHATSAPP = "573001112233"; // TODO: reemplazar por el número real antes de publicar
+
+      document.addEventListener("click", (e) => {
+        const target = e.target as HTMLElement;
+        const btn = target.closest<HTMLElement>(".wa");
+        if (!btn) return;
+        const msg = btn.dataset.msg || "Hola, quiero información.";
+        window.open(
+          `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`,
+          "_blank",
+          "noopener"
+        );
+      });
+    </script>
+  </body>
+</html>

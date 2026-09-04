@@ -1,0 +1,29 @@
+---
+import type { Producto } from "../data/productos";
+import { ICONOS } from "../data/iconos";
+
+interface Props {
+  producto: Producto;
+}
+
+const { producto } = Astro.props;
+const mensaje = `Hola, me interesa: ${producto.titulo} (${producto.precio}). ¿Tienen disponible?`;
+---
+<article class="card" data-categoria={producto.categoria}>
+  <div class="lienzo">
+    <span class="tag">{producto.etiqueta}</span>
+    <Fragment set:html={ICONOS[producto.icono]} />
+  </div>
+  <div class="card-body">
+    <h3>{producto.titulo}</h3>
+    <p>{producto.descripcion}</p>
+    <div class="precio">
+      {producto.precio}
+      <small>{producto.nota}</small>
+    </div>
+    <button class="wa" data-msg={mensaje}>
+      <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.75.46 3.45 1.32 4.95L2 22l5.3-1.38a9.9 9.9 0 0 0 4.74 1.2h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.13-2.9-7A9.82 9.82 0 0 0 12.04 2"/></svg>
+      Cotizar por WhatsApp
+    </button>
+  </div>
+</article>

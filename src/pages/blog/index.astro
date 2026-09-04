@@ -1,0 +1,36 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+
+const articulos = (await getCollection("blog")).sort(
+  (a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf()
+);
+---
+<Layout
+  titulo="Aprender — Ganadería Colombia"
+  descripcion="Guías sobre la Resolución 219, SINIGAN y el cumplimiento normativo para ganaderos en Colombia."
+>
+  <Header />
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">Aprender</span>
+        <h2>Todas las guías</h2>
+        <p>Contenido educativo sobre normativa, identificación bovina e insumos, sin enredos.</p>
+      </div>
+      <div class="blog-grid">
+        {articulos.map((articulo) => (
+          <a class="nota-card" href={`/blog/${articulo.id}`}>
+            <span class="meta">{articulo.data.categoria} · {articulo.data.minutos} min</span>
+            <h3>{articulo.data.titulo}</h3>
+            <p>{articulo.data.resumen}</p>
+            <span>Leer la guía →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  <Footer />
+</Layout>

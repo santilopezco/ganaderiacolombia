@@ -1,0 +1,49 @@
+---
+import { PRODUCTOS, CATEGORIAS, type Categoria } from "../data/productos";
+import ProductoCard from "./ProductoCard.astro";
+
+const categoriasActivas = Object.entries(CATEGORIAS) as [Categoria, string][];
+---
+<section id="catalogo">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker">Catálogo</span>
+      <h2>Empezamos con pocas referencias y buenas</h2>
+      <p>
+        Estamos probando con aretes de manejo primero. Si algo no está, lo conseguimos:
+        escríbanos por WhatsApp.
+      </p>
+    </div>
+
+    <div class="filtros" role="group" aria-label="Filtrar catálogo">
+      <button class="chip" data-f="todo" aria-pressed="true">Todo</button>
+      {categoriasActivas.map(([id, etiqueta]) => (
+        <button class="chip" data-f={id} aria-pressed="false">{etiqueta}</button>
+      ))}
+    </div>
+
+    <div class="grid" id="grid-productos">
+      {PRODUCTOS.map((producto) => (
+        <ProductoCard producto={producto} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const chips = document.querySelectorAll<HTMLButtonElement>(".chip");
+  const tarjetas = document.querySelectorAll<HTMLElement>("#grid-productos .card");
+
+  chips.forEach((chip) => {
+    chip.addEventListener("click", () => {
+      chips.forEach((c) => c.setAttribute("aria-pressed", "false"));
+      chip.setAttribute("aria-pressed", "true");
+      const filtro = chip.dataset.f;
+
+      tarjetas.forEach((tarjeta) => {
+        const coincide = filtro === "todo" || tarjeta.dataset.categoria === filtro;
+        tarjeta.hidden = !coincide;
+      });
+    });
+  });
+</script>

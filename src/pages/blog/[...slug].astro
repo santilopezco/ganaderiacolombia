@@ -1,0 +1,39 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+
+export async function getStaticPaths() {
+  const articulos = await getCollection("blog");
+  return articulos.map((articulo) => ({
+    params: { slug: articulo.id },
+    props: { articulo },
+  }));
+}
+
+const { articulo } = Astro.props;
+const { Content } = await render(articulo);
+
+const fechaLegible = new Intl.DateTimeFormat("es-CO", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+}).format(articulo.data.fecha);
+---
+<Layout titulo={`${articulo.data.titulo} — Ganadería Colombia`} descripcion={articulo.data.resumen}>
+  <Header />
+  <article class="articulo">
+    <div class="wrap">
+      <a class="volver" href="/blog">← Volver a Aprender</a>
+      <div class="meta">
+        {articulo.data.categoria} · {articulo.data.minutos} min de lectura · {fechaLegible}
+      </div>
+      <h1>{articulo.data.titulo}</h1>
+      <div class="cuerpo">
+        <Content />
+      </div>
+    </div>
+  </article>
+  <Footer />
+</Layout>
