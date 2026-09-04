@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 
 const PRECIO_MIN = 12000; // juego DIN de referencia: visual + botón RFID
 const PRECIO_MAX = 18000;
-const WHATSAPP = "573001112233"; // TODO: reemplazar por el número real
+const WHATSAPP = "573138340881"; // TODO: reemplazar por el número real
 
 const cop = (n: number) => "$" + n.toLocaleString("es-CO");
 
